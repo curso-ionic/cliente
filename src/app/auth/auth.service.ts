@@ -12,13 +12,12 @@ export class AuthService {
     constructor(private http: HttpClient) { }
 
     login(username, password) {
-        console.log(environment);
         return new Promise( (resolve, reject) => {
             this.http.post(environment.serverUrl + 'auth/login', { username: username, password: password }).subscribe(respuesta => {
                 this.usuario = respuesta;
                 resolve();
             }, (error) => {
-                reject();
+                reject(error);
             });
         })
 

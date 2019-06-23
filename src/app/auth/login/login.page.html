@@ -8,6 +8,11 @@
     <ion-grid>
         <ion-row>
             <ion-col size="6" offset="3">
+                {{mensajeError}}
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="6" offset="3">
                 <ion-item>
                     <ion-input type="text" placeholder="Usuario" [(ngModel)]="username"></ion-input>
                 </ion-item>

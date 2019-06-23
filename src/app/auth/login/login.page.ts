@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
 
+  mensajeError = '';
   username = '';
   password = '';
 
@@ -19,11 +20,17 @@ export class LoginPage implements OnInit {
   }
 
   login() {
+      this.mensajeError = '';
       this.service.login(this.username, this.password).then( () => {
         this.router.navigateByUrl('/principal');
-      }).catch( () => {
-
-      })
+      }).catch( (error) => {
+          if (error.status == 400) {
+              this.mensajeError = 'Usuario/Password incorrectos';
+              return;
+          }
+          this.mensajeError = 'No me puedo comunicar con el servidor';
+          console.log(error);
+      });
   }
 
 }
