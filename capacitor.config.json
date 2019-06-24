@@ -1,0 +1,7 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "interviewer",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}

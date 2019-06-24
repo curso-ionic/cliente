@@ -5,8 +5,38 @@
 </ion-header>
 
 <ion-content>
-    <ion-title>Página principal</ion-title>
-    <ion-card>
-        Esta página debe ser solo accesible si el usuario esta logeado
-    </ion-card>
+    <ion-title>Página de grabación!!</ion-title>
+    <ion-button (click)="grabar()">
+        Grabar
+    </ion-button>
+    <ion-button (click)="pararGrabacion()">
+        Parar grabación
+    </ion-button>
+
+    <ion-button (click)="pausarGrabacion()" *ngIf="pausaGrabacionVisible">
+        Pausar grabación
+    </ion-button>
+
+    <ion-button (click)="resumirGrabacion()" *ngIf="pausaGrabacionVisible">
+        Resumir grabación
+    </ion-button>
+
+    <ion-button (click)="reproducir()">
+        Reproducir
+    </ion-button>
+
+    <ion-button (click)="pausarReproduccion()">
+        Pausar reproducción
+    </ion-button>
+
+    <ion-button (click)="pararReproduccion()">
+        Parar reproducción
+    </ion-button>
+
+    Estado:
+    <span *ngIf="estado==0">Inactivo</span>
+    <span *ngIf="estado==1">Grabando</span>
+    <span *ngIf="estado==2">Grabación pausada</span>
+    <span *ngIf="estado==3">Reproduciendo</span>
+    <span *ngIf="estado==4">Reproducción pausada</span>
 </ion-content>

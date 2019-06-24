@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PrincipalPage } from './principal.page';
+import { Media } from '@ionic-native/media/ngx';
 
 const routes: Routes = [
   {

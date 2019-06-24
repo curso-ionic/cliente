@@ -1,5 +1,8 @@
 {
   "name": "interviewer",
-  "integrations": {},
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
   "type": "angular"
 }
