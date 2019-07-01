@@ -1,18 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>principal</ion-title>
+    <ion-title>Interview recorder</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-title>Página de grabación!!</ion-title>
-    <ion-button (click)="grabar()">
-        Grabar
-    </ion-button>
-    <ion-button (click)="pararGrabacion()">
-        Parar grabación
-    </ion-button>
 
+    <ion-button (click)="grabar()" *ngIf="estado==0">
+        <ion-icon name="radio-button-off"></ion-icon>
+    </ion-button>
+    <ion-button (click)="pararGrabacion()" *ngIf="estado==1">
+        <ion-icon name="square"></ion-icon>
+    </ion-button>
+    <ion-text color="primary" *ngIf="estado==1">
+        Grabando {{nombreArchivo}}
+    </ion-text>
+
+
+
+<!--
     <ion-button (click)="pausarGrabacion()" *ngIf="pausaGrabacionVisible">
         Pausar grabación
     </ion-button>
@@ -32,11 +38,27 @@
     <ion-button (click)="pararReproduccion()">
         Parar reproducción
     </ion-button>
+-->
 
+    <ion-button (click)="reproducir()">
+        Reproducir
+    </ion-button>
     Estado:
     <span *ngIf="estado==0">Inactivo</span>
-    <span *ngIf="estado==1">Grabando</span>
-    <span *ngIf="estado==2">Grabación pausada</span>
-    <span *ngIf="estado==3">Reproduciendo</span>
-    <span *ngIf="estado==4">Reproducción pausada</span>
+    <span *ngIf="estado==1">Corriendo</span>
+    <span *ngIf="estado==2">Pausado</span>
+    <span *ngIf="estado==3">Parado</span>
+
+
+    <div *ngIf="timerEncendido">
+        {{timer}} segundos
+    </div>
+
+    <ion-list>
+        <ion-item *ngFor="let unItem of grabaciones; let i = index" (click)="seleccionarGrabacion(i)">
+            <ion-label>{{unItem.nombre}}</ion-label>
+        </ion-item>
+    </ion-list>
+
+
 </ion-content>
