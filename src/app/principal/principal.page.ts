@@ -145,13 +145,13 @@ export class PrincipalPage implements OnInit {
     }
 
     async cargarTags() {
-        let httpOptions = {
+        const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + this.authService.getToken()
             })
         };
-        const tmpTags = <string[]> await this.http.get(environment.serverUrl + 'tags', httpOptions).toPromise();
+        const tmpTags = await this.http.get(environment.serverUrl + 'tags', httpOptions).toPromise() as string[];
         this.tags = [];
         tmpTags.forEach( (item) => {
             this.tags.push({nombre: item, cantidad: 0, positions: []});
