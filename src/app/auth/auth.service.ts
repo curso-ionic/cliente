@@ -9,9 +9,9 @@ export class AuthService {
 
     private usuario = null;
 
-    constructor(private http: HttpClient) { 
+    constructor(private http: HttpClient) {
         if (localStorage.getItem('usuario')) {
-            this.usuario = localStorage.getItem('usuario');
+            this.usuario = JSON.parse(localStorage.getItem('usuario'));
         }
     }
 
@@ -19,7 +19,7 @@ export class AuthService {
         return new Promise( (resolve, reject) => {
             this.http.post(environment.serverUrl + 'auth/login', { username: username, password: password }).subscribe(respuesta => {
                 this.usuario = respuesta;
-                localStorage.setItem('usuario', this.usuario);
+                localStorage.setItem('usuario', JSON.stringify(this.usuario));
                 resolve();
             }, (error) => {
                 reject(error);
@@ -34,5 +34,12 @@ export class AuthService {
 
     logout() {
         this.usuario = null;
+    }
+
+    getToken() {
+        if (!this.usuario) {
+            return null;
+        }
+        return this.usuario.token;
     }
 }

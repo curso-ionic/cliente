@@ -5,7 +5,6 @@
 </ion-header>
 
 <ion-content>
-
     <ion-button (click)="grabar()" *ngIf="estado==0">
         <ion-icon name="radio-button-off"></ion-icon>
     </ion-button>
@@ -55,8 +54,15 @@
     </div>
 
     <ion-list>
-        <ion-item *ngFor="let unItem of grabaciones; let i = index" (click)="seleccionarGrabacion(i)">
+        <ion-item *ngFor="let unItem of tags; let i = index" (click)="seleccionoTag(i)">
             <ion-label>{{unItem.nombre}}</ion-label>
+            <ion-badge slot="end">{{unItem.cantidad}}</ion-badge>
+        </ion-item>
+    </ion-list>
+
+    <ion-list>
+        <ion-item *ngFor="let unItem of grabaciones; let i = index" (click)="seleccionarGrabacion(i)">
+            <ion-label>{{unItem.nombre}}</ion-label>            
         </ion-item>
     </ion-list>
 

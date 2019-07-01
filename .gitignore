@@ -35,3 +35,4 @@ UserInterfaceState.xcuserstate
 package-lock.json
 .gradle
 android/
+ios/

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
-import { File }  from '@ionic-native/file/ngx';
+import { File } from '@ionic-native/file/ngx';
 import { Platform } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
+import { environment } from 'src/environments/environment';
 const { Storage } = Plugins;
 
 enum estadoGrabacion {
@@ -32,17 +35,20 @@ export class PrincipalPage implements OnInit {
     timer = 0;
     timerEncendido = false;
 
-    constructor(private media: Media, private file: File, private platform: Platform) { }
+    tags: any = [];
+
+    constructor(private media: Media, private file: File, private platform: Platform, private authService: AuthService, private http: HttpClient) { }
 
     ngOnInit() {
         if (this.platform.is('ios')) {
             this.pausaGrabacionVisible = true;
         }
-        this.obtenerGrabaciones().then( (obj) => {
+        this.obtenerGrabaciones().then((obj) => {
             if (obj.value) {
                 this.grabaciones = JSON.parse(obj.value);
             }
         });
+        this.cargarTags();
     }
 
     /**
@@ -53,16 +59,16 @@ export class PrincipalPage implements OnInit {
     }
 
     agregarGrabacionActual() {
-        const objGrabacion = {nombre: this.nombreArchivo}
+        const objGrabacion = { nombre: this.nombreArchivo }
         this.grabaciones.push(objGrabacion);
         Storage.set({
-                key: 'grabaciones',
-                value: JSON.stringify(this.grabaciones)
-            });
+            key: 'grabaciones',
+            value: JSON.stringify(this.grabaciones)
+        });
     }
 
     async obtenerGrabaciones() {
-        return await Storage.get({key: 'grabaciones'});
+        return await Storage.get({ key: 'grabaciones' });
     }
 
     grabar() {
@@ -73,7 +79,8 @@ export class PrincipalPage implements OnInit {
         const directorioDestino = '';
         this.nombreArchivo = this.siguienteNombre() + '.3gp';
         this.grabacionActiva = this.media.create(directorioDestino + this.nombreArchivo);
-        this.grabacionActiva.onStatusUpdate.subscribe( (newStatus) => {
+        this.estado = estadoGrabacion.corriendo;
+        this.grabacionActiva.onStatusUpdate.subscribe((newStatus) => {
             switch (newStatus) {
                 case 0:
                     this.estado = estadoGrabacion.inactivo;
@@ -90,6 +97,7 @@ export class PrincipalPage implements OnInit {
                 default:
                     break;
             }
+            console.log(this.estado);
         });
 
         this.grabacionActiva.startRecord();
@@ -134,6 +142,26 @@ export class PrincipalPage implements OnInit {
     seleccionarGrabacion(idx) {
         const nombreArchivo = this.grabaciones[idx].nombre;
         this.grabacionActiva = this.media.create(nombreArchivo);
+    }
+
+    async cargarTags() {
+        let httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + this.authService.getToken()
+            })
+        };
+        const tmpTags = <string[]> await this.http.get(environment.serverUrl + 'tags', httpOptions).toPromise();
+        this.tags = [];
+        tmpTags.forEach( (item) => {
+            this.tags.push({nombre: item, cantidad: 0, positions: []});
+        });
+    }
+
+    seleccionoTag(idx) {
+        this.tags[idx].cantidad ++;
+        this.tags[idx].positions.push({posicion: this.timer});
+        console.log(this.tags);
     }
 
 }
