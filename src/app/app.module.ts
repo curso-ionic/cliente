@@ -11,10 +11,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { Media } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { PrincipalPage } from './principal/principal.page';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, PrincipalPage],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [

@@ -1,0 +1,49 @@
+<ion-content>
+   
+
+    <ion-button (click)="reproducir()" *ngIf="estado==0">
+        Reproducir
+    </ion-button>
+    <ion-button (click)="pausar()" *ngIf="estado==2">
+        Pausar
+    </ion-button>
+    <ion-button (click)="parar()" *ngIf="estado!=0">
+        Parar
+    </ion-button>
+
+    <ion-text color="primary" *ngIf="nombreArchivo">
+        Seleccionado {{nombreArchivo}}
+    </ion-text>
+
+
+
+    <div *ngIf="timerEncendido">
+        {{timer}} segundos
+    </div>
+
+    <div *ngIf="estado==0">
+        <ion-title>Grabaciones</ion-title>
+        <ion-list >
+            <ion-item *ngFor="let unItem of grabaciones; let i = index" (click)="seleccionarGrabacion(i)">
+                <ion-label>{{unItem.nombre}}</ion-label>
+            </ion-item>
+        </ion-list>
+    </div>
+
+    <div *ngIf="estado!=0">
+    <ion-title>Etiquetas</ion-title>
+    <ion-list>
+        <ion-item *ngFor="let unItem of tags; let i = index" (click)="seleccionoTag(i)">
+            <ion-label>{{unItem.nombre}}</ion-label>
+            <ion-chip>
+                <ion-label color="secondary">Secondary Label</ion-label>
+            </ion-chip>
+            <ion-chip>
+                <ion-label color="secondary">Secondary Label</ion-label>
+            </ion-chip>
+            <ion-badge slot="end">{{unItem.cantidad}}</ion-badge>
+        </ion-item>
+    </ion-list>
+    </div>
+
+</ion-content>

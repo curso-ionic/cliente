@@ -5,66 +5,17 @@
 </ion-header>
 
 <ion-content>
-    <ion-button (click)="grabar()" *ngIf="estado==0">
-        <ion-icon name="radio-button-off"></ion-icon>
-    </ion-button>
-    <ion-button (click)="pararGrabacion()" *ngIf="estado==1">
-        <ion-icon name="square"></ion-icon>
-    </ion-button>
-    <ion-text color="primary" *ngIf="estado==1">
-        Grabando {{nombreArchivo}}
-    </ion-text>
 
-
-
-<!--
-    <ion-button (click)="pausarGrabacion()" *ngIf="pausaGrabacionVisible">
-        Pausar grabación
-    </ion-button>
-
-    <ion-button (click)="resumirGrabacion()" *ngIf="pausaGrabacionVisible">
-        Resumir grabación
-    </ion-button>
-
-    <ion-button (click)="reproducir()">
-        Reproducir
-    </ion-button>
-
-    <ion-button (click)="pausarReproduccion()">
-        Pausar reproducción
-    </ion-button>
-
-    <ion-button (click)="pararReproduccion()">
-        Parar reproducción
-    </ion-button>
--->
-
-    <ion-button (click)="reproducir()">
-        Reproducir
-    </ion-button>
-    Estado:
-    <span *ngIf="estado==0">Inactivo</span>
-    <span *ngIf="estado==1">Corriendo</span>
-    <span *ngIf="estado==2">Pausado</span>
-    <span *ngIf="estado==3">Parado</span>
-
-
-    <div *ngIf="timerEncendido">
-        {{timer}} segundos
-    </div>
-
-    <ion-list>
-        <ion-item *ngFor="let unItem of tags; let i = index" (click)="seleccionoTag(i)">
-            <ion-label>{{unItem.nombre}}</ion-label>
-            <ion-badge slot="end">{{unItem.cantidad}}</ion-badge>
-        </ion-item>
-    </ion-list>
-
-    <ion-list>
-        <ion-item *ngFor="let unItem of grabaciones; let i = index" (click)="seleccionarGrabacion(i)">
-            <ion-label>{{unItem.nombre}}</ion-label>            
-        </ion-item>
-    </ion-list>
-
-
+<ion-tabs>
+    <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="grabacion">
+            <ion-icon name="apps"></ion-icon>
+            <ion-label>Grabación</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="reproduccion">
+            <ion-icon name="musical-notes"></ion-icon>
+            <ion-label>Reproducción</ion-label>
+        </ion-tab-button>
+    </ion-tab-bar>
+</ion-tabs>
 </ion-content>

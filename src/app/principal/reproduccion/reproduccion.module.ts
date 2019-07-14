@@ -5,17 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PrincipalPage } from './principal.page';
-import { Media } from '@ionic-native/media/ngx';
+import { ReproduccionPage } from './reproduccion.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: PrincipalPage
-  },
-  {
-      path: 'grabacion',
-      component: PrincipalPage
+    component: ReproduccionPage
   }
 ];
 
@@ -26,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PrincipalPage]
+  declarations: [ReproduccionPage]
 })
-export class PrincipalPageModule {}
+export class ReproduccionPageModule {}
