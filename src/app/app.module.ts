@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Media } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { PrincipalPage } from './principal/principal.page';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { PrincipalPage } from './principal/principal.page';
     SplashScreen,
     Media,
     File,
+    Base64,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -22,9 +22,12 @@
 
     <div *ngIf="estado==0">
         <ion-title>Grabaciones</ion-title>
-        <ion-list >
+        <ion-list>
             <ion-item *ngFor="let unItem of grabaciones; let i = index" (click)="seleccionarGrabacion(i)">
                 <ion-label>{{unItem.nombre}}</ion-label>
+                <ion-button (click)="upload(unItem.nombre)">
+                    Upload
+                </ion-button>
             </ion-item>
         </ion-list>
     </div>

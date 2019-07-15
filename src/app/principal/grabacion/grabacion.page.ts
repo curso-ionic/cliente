@@ -37,12 +37,14 @@ export class GrabacionPage implements OnInit {
                 private file: File,
                 private platform: Platform,
                 private authService: AuthService,
-                private http: HttpClient) { }
+                private http: HttpClient) { 
+                }
 
     ngOnInit() {
         if (this.platform.is('ios')) {
             this.pausaGrabacionVisible = true;
         }
+
         this.obtenerGrabaciones().then((obj) => {
             if (obj.value) {
                 this.grabaciones = JSON.parse(obj.value);
@@ -75,8 +77,11 @@ export class GrabacionPage implements OnInit {
             this.grabacionActiva.release();
             this.grabacionActiva = null;
         }
+        
+        //const directorioDestino = this.file.dataDirectory.replace(/^file:\/\//, '');
         const directorioDestino = '';
         const nombreArchivo = this.siguienteNombre() + '.3gp';
+
         this.grabacionActiva = this.media.create(directorioDestino + nombreArchivo);
         this.grabacionActiva.onStatusUpdate.subscribe((newStatus) => {
             this.estado = newStatus;
@@ -129,5 +134,6 @@ export class GrabacionPage implements OnInit {
     seleccionoTag(idx) {
         this.archivoGrabacionActual.tags[idx].posiciones.push(this.timer);
     }
+
 
 }

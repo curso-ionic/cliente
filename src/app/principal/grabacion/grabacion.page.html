@@ -28,6 +28,8 @@
         </ion-item>
     </ion-list>
 
-    {{archivoGrabacionActual | json}}
+    <ion-button (click)="upload()" *ngIf="estado==4">
+        Subir archivo
+    </ion-button>
 
 </ion-content>

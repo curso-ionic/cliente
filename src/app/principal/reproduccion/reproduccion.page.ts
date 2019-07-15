@@ -3,10 +3,11 @@ import { Media, MediaObject, MEDIA_STATUS } from '@ionic-native/media/ngx';
 import { Platform } from '@ionic/angular';
 import { AuthService } from 'src/app/auth/auth.service';
 import { File } from '@ionic-native/file/ngx';
-import { Plugins } from '@capacitor/core';
+import { Plugins, Capacitor, FileReadResult } from '@capacitor/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ArchivoAudio } from '../archivo-audio';
+import { Base64 } from '@ionic-native/base64/ngx';
 const { Storage } = Plugins;
 
 
@@ -35,7 +36,8 @@ export class ReproduccionPage implements OnInit {
         private file: File,
         private platform: Platform,
         private authService: AuthService,
-        private http: HttpClient) { }
+        private http: HttpClient,
+        private base64: Base64) { }
 
     ngOnInit() {
 
@@ -89,4 +91,26 @@ export class ReproduccionPage implements OnInit {
         this.archivoReproduccionActual = this.grabaciones[idx];
     }
 
+    async upload(archivo) {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + this.authService.getToken()
+            })
+        };
+        try {
+            const entry = await this.file.resolveLocalFilesystemUrl(this.file.externalRootDirectory + archivo);
+            const fullPath = entry.nativeURL;
+            const contenidoArchivo: FileReadResult = await Capacitor.Plugins.Filesystem.readFile({ path: fullPath });
+            const contenidoB64 = contenidoArchivo.data;
+            const body: any = {...this.archivoReproduccionActual};
+            body.contenido = contenidoB64;
+            const rta = this.http.post(environment.serverUrl + 'grabaciones', body, httpOptions).toPromise();
+            console.log(rta);
+
+        } catch (e) {
+            console.log('------ERROR---------');
+            console.log(e);
+        }
+    }
 }

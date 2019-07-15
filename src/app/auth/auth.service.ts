@@ -10,21 +10,23 @@ export class AuthService {
     private usuario = null;
 
     constructor(private http: HttpClient) {
-        //if (localStorage.getItem('usuario')) {
-        //    this.usuario = JSON.parse(localStorage.getItem('usuario'));
-        //}
+        if (localStorage.getItem('usuario')) {
+            this.usuario = JSON.parse(localStorage.getItem('usuario'));
+        }
     }
 
-    login(username, password) {
-        return new Promise( (resolve, reject) => {
-            this.http.post(environment.serverUrl + 'auth/login', { username: username, password: password }).subscribe(respuesta => {
-                this.usuario = respuesta;
-                localStorage.setItem('usuario', JSON.stringify(this.usuario));
-                resolve();
-            }, (error) => {
-                reject(error);
-            });
-        });
+    async login(username, password) {
+        try {
+            const body = {username, password};
+            //console.log(body);
+            const respuesta = await this.http.post(environment.serverUrl + 'auth/login', body).toPromise();
+            this.usuario = respuesta;
+            localStorage.setItem('usuario', JSON.stringify(this.usuario));
+            //console.log('ok');
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
 
     }
 

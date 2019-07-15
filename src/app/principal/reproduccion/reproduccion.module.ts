@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ReproduccionPage } from './reproduccion.page';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 const routes: Routes = [
   {
