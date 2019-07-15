@@ -3,19 +3,19 @@
     <ion-button (click)="grabar()" *ngIf="estado==0">
         <ion-icon name="radio-button-off"></ion-icon>
     </ion-button>
-    <ion-button (click)="pararGrabacion()" *ngIf="estado==1">
+    <ion-button (click)="pararGrabacion()" *ngIf="estado==2">
         <ion-icon name="square"></ion-icon>
     </ion-button>
-    <ion-text color="primary" *ngIf="estado==1">
-        Grabando {{nombreArchivo}}
+    <ion-text color="primary" *ngIf="estado==2">
+        Grabando {{archivoGrabacionActual?.nombre}}
     </ion-text>
 
 
     Estado:
     <span *ngIf="estado==0">Inactivo</span>
-    <span *ngIf="estado==1">Corriendo</span>
-    <span *ngIf="estado==2">Pausado</span>
-    <span *ngIf="estado==3">Parado</span>
+    <span *ngIf="estado==2">Corriendo</span>
+    <span *ngIf="estado==3">Pausado</span>
+    <span *ngIf="estado==4">Parado</span>
     
     
     <div *ngIf="timerEncendido">
@@ -24,10 +24,10 @@
     
     <ion-list>
         <ion-item *ngFor="let unItem of tags; let i = index" (click)="seleccionoTag(i)">
-            <ion-label>{{unItem.nombre}}</ion-label>
-            <ion-badge slot="end">{{unItem.cantidad}}</ion-badge>
+            <ion-label>{{unItem}}</ion-label>
         </ion-item>
     </ion-list>
 
+    {{archivoGrabacionActual | json}}
 
 </ion-content>

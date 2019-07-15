@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
   login() {
       this.mensajeError = '';
       this.service.login(this.username, this.password).then( () => {
-        this.router.navigateByUrl('/principal');
+        this.router.navigateByUrl('/principal/reproduccion');
       }).catch( (error) => {
           if (error.status == 400) {
               this.mensajeError = 'Usuario/Password incorrectos';

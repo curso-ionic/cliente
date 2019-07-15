@@ -6,6 +6,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Plugins } from '@capacitor/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { ArchivoAudio } from '../archivo-audio';
 const { Storage } = Plugins;
 
 
@@ -22,14 +23,13 @@ export class ReproduccionPage implements OnInit {
 
     estado: MEDIA_STATUS = MEDIA_STATUS.NONE;
 
-    pausaGrabacionVisible = false;
-
-    nombreArchivo = '';
+    archivoReproduccionActual: ArchivoAudio;
 
     timer = 0;
     timerEncendido = false;
 
-    tags: any = [];
+    tags: string[] = [];
+
 
     constructor(private media: Media,
         private file: File,
@@ -38,6 +38,10 @@ export class ReproduccionPage implements OnInit {
         private http: HttpClient) { }
 
     ngOnInit() {
+
+    }
+
+    ionViewDidEnter() {
         this.obtenerGrabaciones().then((obj) => {
             if (obj.value) {
                 this.grabaciones = JSON.parse(obj.value);
@@ -56,33 +60,33 @@ export class ReproduccionPage implements OnInit {
                 Authorization: 'Bearer ' + this.authService.getToken()
             })
         };
-        const tmpTags = await this.http.get(environment.serverUrl + 'tags', httpOptions).toPromise() as string[];
-        this.tags = [];
-        tmpTags.forEach((item) => {
-            this.tags.push({ nombre: item, cantidad: 0, positions: [] });
-        });
+        this.tags = await this.http.get(environment.serverUrl + 'tags', httpOptions).toPromise() as string[];
+
     }
 
     reproducir() {
-        this.reproduccionActiva.seekTo(0);
         this.reproduccionActiva.play();
+        this.estado = 2;
     }
 
     pausar() {
         this.reproduccionActiva.pause();
+        this.estado = 1;
     }
 
     parar() {
         this.reproduccionActiva.stop();
+        this.estado = 0;
+    }
+
+    irAPosicion(pos) {
+        this.reproduccionActiva.seekTo(pos * 1000);
     }
 
     seleccionarGrabacion(idx) {
         const nombreArchivo = this.grabaciones[idx].nombre;
         this.reproduccionActiva = this.media.create(nombreArchivo);
-        this.reproduccionActiva.onStatusUpdate.subscribe((newStatus) => {
-            this.estado = newStatus;
-        });
-        this.nombreArchivo = nombreArchivo;
+        this.archivoReproduccionActual = this.grabaciones[idx];
     }
 
 }

@@ -6,7 +6,9 @@ import { Plugins } from '@capacitor/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/auth.service';
 import { environment } from 'src/environments/environment';
+import { ArchivoAudio } from '../archivo-audio';
 const { Storage } = Plugins;
+
 
 
 @Component({
@@ -18,13 +20,13 @@ export class GrabacionPage implements OnInit {
 
     grabacionActiva: MediaObject;
 
-    grabaciones: any[] = [];
+    archivoGrabacionActual: ArchivoAudio;
+
+    grabaciones: ArchivoAudio[] = [];
 
     estado: MEDIA_STATUS = MEDIA_STATUS.NONE;
 
     pausaGrabacionVisible = false;
-
-    nombreArchivo = '';
 
     timer = 0;
     timerEncendido = false;
@@ -57,8 +59,7 @@ export class GrabacionPage implements OnInit {
     }
 
     agregarGrabacionActual() {
-        const objGrabacion = { nombre: this.nombreArchivo }
-        this.grabaciones.push(objGrabacion);
+        this.grabaciones.push(this.archivoGrabacionActual);
         Storage.set({
             key: 'grabaciones',
             value: JSON.stringify(this.grabaciones)
@@ -75,17 +76,18 @@ export class GrabacionPage implements OnInit {
             this.grabacionActiva = null;
         }
         const directorioDestino = '';
-        this.nombreArchivo = this.siguienteNombre() + '.3gp';
-        this.grabacionActiva = this.media.create(directorioDestino + this.nombreArchivo);
-
-        //this.estado = estadoGrabacion.corriendo;
-
+        const nombreArchivo = this.siguienteNombre() + '.3gp';
+        this.grabacionActiva = this.media.create(directorioDestino + nombreArchivo);
         this.grabacionActiva.onStatusUpdate.subscribe((newStatus) => {
             this.estado = newStatus;
             console.log(this.estado);
         });
 
         this.grabacionActiva.startRecord();
+        this.archivoGrabacionActual = { nombre: nombreArchivo, tags: [] };
+        this.tags.forEach(unTag => {
+            this.archivoGrabacionActual.tags.push({nombre: unTag, posiciones: []});
+        });
         this.timer = 0;
         this.timerEncendido = true;
 
@@ -121,17 +123,11 @@ export class GrabacionPage implements OnInit {
                 Authorization: 'Bearer ' + this.authService.getToken()
             })
         };
-        const tmpTags = await this.http.get(environment.serverUrl + 'tags', httpOptions).toPromise() as string[];
-        this.tags = [];
-        tmpTags.forEach((item) => {
-            this.tags.push({ nombre: item, cantidad: 0, positions: [] });
-        });
+        this.tags = await this.http.get(environment.serverUrl + 'tags', httpOptions).toPromise() as string[];
     }
 
     seleccionoTag(idx) {
-        this.tags[idx].cantidad++;
-        this.tags[idx].positions.push({ posicion: this.timer });
-        console.log(this.tags);
+        this.archivoGrabacionActual.tags[idx].posiciones.push(this.timer);
     }
 
 }

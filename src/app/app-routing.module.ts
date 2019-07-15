@@ -4,8 +4,8 @@ import { AuthGuard } from './auth/auth.guard';
 import { PrincipalPage } from './principal/principal.page';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'principal', pathMatch: 'full' },
-    { path: 'home', loadChildren: './home/home.module#HomePageModule' },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    //{ path: 'home', loadChildren: './home/home.module#HomePageModule' },
     { path: 'login', loadChildren: './auth/login/login.module#LoginPageModule' },
     {
         path: 'principal', component: PrincipalPage,

@@ -1,18 +1,17 @@
 <ion-content>
-   
 
-    <ion-button (click)="reproducir()" *ngIf="estado==0">
-        Reproducir
+    <ion-button (click)="reproducir()" *ngIf="(estado==0 || estado==1) && archivoReproduccionActual">
+        <ion-icon name="play"></ion-icon>
     </ion-button>
     <ion-button (click)="pausar()" *ngIf="estado==2">
-        Pausar
+        <ion-icon name="pause"></ion-icon>
     </ion-button>
     <ion-button (click)="parar()" *ngIf="estado!=0">
-        Parar
+        <ion-icon name="square"></ion-icon>
     </ion-button>
 
-    <ion-text color="primary" *ngIf="nombreArchivo">
-        Seleccionado {{nombreArchivo}}
+    <ion-text color="primary" *ngIf="archivoReproduccionActual?.nombre">
+        Seleccionado {{archivoReproduccionActual.nombre}}
     </ion-text>
 
 
@@ -33,15 +32,12 @@
     <div *ngIf="estado!=0">
     <ion-title>Etiquetas</ion-title>
     <ion-list>
-        <ion-item *ngFor="let unItem of tags; let i = index" (click)="seleccionoTag(i)">
+        <ion-item *ngFor="let unItem of archivoReproduccionActual.tags; let i = index">
             <ion-label>{{unItem.nombre}}</ion-label>
-            <ion-chip>
-                <ion-label color="secondary">Secondary Label</ion-label>
-            </ion-chip>
-            <ion-chip>
-                <ion-label color="secondary">Secondary Label</ion-label>
-            </ion-chip>
-            <ion-badge slot="end">{{unItem.cantidad}}</ion-badge>
+
+            <ion-button *ngFor="let unaPosicion of unItem.posiciones">
+                <ion-label (click)="irAPosicion(unaPosicion)">Go</ion-label>
+            </ion-button>
         </ion-item>
     </ion-list>
     </div>

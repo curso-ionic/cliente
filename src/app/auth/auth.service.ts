@@ -10,9 +10,9 @@ export class AuthService {
     private usuario = null;
 
     constructor(private http: HttpClient) {
-        if (localStorage.getItem('usuario')) {
-            this.usuario = JSON.parse(localStorage.getItem('usuario'));
-        }
+        //if (localStorage.getItem('usuario')) {
+        //    this.usuario = JSON.parse(localStorage.getItem('usuario'));
+        //}
     }
 
     login(username, password) {
@@ -24,7 +24,7 @@ export class AuthService {
             }, (error) => {
                 reject(error);
             });
-        })
+        });
 
     }
 
